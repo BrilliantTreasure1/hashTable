@@ -15,13 +15,23 @@ class HashTable {
     if (!this.buckets[index]) {
       this.buckets[index] = [];
     }
+
     const existing = this.buckets[index].find(item => item[0] === key);
+
     if (existing) {
+      console.log(`🔁 Key '${key}' already exists. Updating its value.`);
       existing[1] = value;
     } else {
+      if (this.buckets[index].length > 0) {
+        console.log(`⚠️ Collision detected at index ${index}`);
+      }
       this.buckets[index].push([key, value]);
+      console.log(`✅ Inserted '${key}' at index ${index}`);
     }
+
+    console.log(`📦 Current bucket: ${JSON.stringify(this.buckets[index])}`);
   }
+
 
   get(key) {
     const index = this.hash(key);
@@ -32,16 +42,18 @@ class HashTable {
     }
     return undefined;
   }
+
   getBucket(key) {
     const index = this.hash(key);
     return this.buckets[index];
-  }  
+  }
 
   remove(key) {
     const index = this.hash(key);
     const bucket = this.buckets[index];
     if (bucket) {
       this.buckets[index] = bucket.filter(item => item[0] !== key);
+      console.log(`🧹 Removed '${key}' from index ${index}`);
     }
   }
 }
@@ -64,36 +76,33 @@ rl.on('line', (line) => {
 
   switch (cmd) {
     case 'set':
-      if (key && value) {      
+      if (key && value) {
         ht.set(key, value);
-        console.log(`✅ Set ${key} = ${value} `);
       } else {
         console.log('❗ Usage: set <key> <value>');
       }
       break;
 
-      case 'get':
-        if (key) {
-          const index = ht.hash(key); // گرفتن ایندکس هش‌شده
-          const result = ht.get(key); // گرفتن مقدار کلید
-          const bucket = ht.getBucket(key); // گرفتن سطل مربوط به آن ایندکس
-          if (result !== undefined) {
-            console.log(`🔍 Found: ${key} = ${result}`);
-            console.log(`📌 Stored at index: ${index}`);
-            console.log(`📦 Bucket contents: ${JSON.stringify(bucket)}`);
-          } else {
-            console.log(`❌ ${key} not found`);
-          }
+    case 'get':
+      if (key) {
+        const index = ht.hash(key);
+        const result = ht.get(key);
+        const bucket = ht.getBucket(key);
+        if (result !== undefined) {
+          console.log(`🔍 Found: ${key} = ${result}`);
+          console.log(`📌 Stored at index: ${index}`);
+          console.log(`📦 Bucket contents: ${JSON.stringify(bucket)}`);
         } else {
-          console.log('❗ Usage: get <key>');
+          console.log(`❌ ${key} not found`);
         }
-        break;
-      
+      } else {
+        console.log('❗ Usage: get <key>');
+      }
+      break;
 
     case 'remove':
       if (key) {
         ht.remove(key);
-        console.log(`🗑️ Removed ${key}`);
       } else {
         console.log('❗ Usage: remove <key>');
       }
