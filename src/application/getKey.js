@@ -1,5 +1,3 @@
-// src/application/getKey.js
-
 /**
  * Use-case: Get a value by key from the HashTable.
  *
@@ -7,17 +5,14 @@
  * @param {string} key - The key to look up.
  * @returns {Object} An object containing the value, index, and bucket.
  */
-function getKey(hashTable, key) {
-    if (!key) {
-      throw new Error('Key is required');
-    }
-  
-    const index = hashTable.hash(key);
-    const value = hashTable.get(key);
-    const bucket = hashTable.getBucket(key);
-  
-    return { value, index, bucket };
+export function getKey(hashTable, key) {
+  if (!key) {
+    throw new Error('Key is required');
   }
-  
-  module.exports = getKey;
-  
+
+  const index = hashTable.hash(key);
+  const value = hashTable.get(key);
+  const bucket = hashTable.getBucket(key);
+
+  return { value, index, bucket };
+}

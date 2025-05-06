@@ -2,7 +2,8 @@
 import { LoggerPort } from '../ports/LoggerPort.js';
 
 export class ConsoleLogger extends LoggerPort {
-  log(message) {
-    console.log(message);
+    log(message) {
+      console.log(message);
+    }
   }
-}
+
